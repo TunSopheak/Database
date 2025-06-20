@@ -3,7 +3,7 @@
 SELECT * FROM dbo.Employees
 GO
 
---2. Show all firstName and lastname of employees​​ in Employees table.
+--2. Show all firstName and lastname of employees in Employees table.
 SELECT FirstName, LastName FROM dbo.Employees
 GO
 
@@ -36,11 +36,11 @@ GO
 SELECT Title FROM dbo.Employees
 GO
 
---9. Show all distinct (unique) titles from the Employees table (if two titles have the same name, it show only one).
+--9. Show all distinct (unique) titles from the Employees table (if two titles have the same name, it shows only one).
 SELECT DISTINCT Title FROM dbo.Employees
 GO
 
---10. Using the WHERE clause to retrieve only customers from Paris by showing CompanyName and City .
+--10. Using the WHERE clause to retrieve only customers from Paris by showing CompanyName and City.
 SELECT CompanyName, City
 FROM dbo.Customers
 WHERE City = 'Paris'
@@ -142,7 +142,7 @@ GO
 SELECT CustomerID
 FROM dbo.Customers
 WHERE CustomerID NOT IN(SELECT CustomerID 
-						FROM dbo.Orders)
+                        FROM dbo.Orders)
 GO
 
 --27. Display employees sorted by city name in ascending order.
@@ -176,7 +176,7 @@ GO
 
 --32. Shows a discrepancy between the number of employees and the number of regions.
 SELECT COUNT(*) AS NumEmployees, 
-	COUNT(Region) AS NumRegion
+    COUNT(Region) AS NumRegion
 FROM dbo.Employees
 GO
 
@@ -189,7 +189,7 @@ GO
 --34. This query causes an error because City is not included in a GROUP BY clause while using COUNT(*).
 --To count employees per city, City must be included in GROUP BY.
 --Error: Msg 8120, Level 16, State 1, Line 191
---		Column 'dbo.Employees.City' is invalid in the select list because it is not contained in either an aggregate function or the GROUP BY clause.
+--      Column 'dbo.Employees.City' is invalid in the select list because it is not contained in either an aggregate function or the GROUP BY clause.
 SELECT City, COUNT(*) AS NumEmployees
 FROM dbo.Employees
 GO
@@ -217,7 +217,7 @@ GO
 
 --38. Select the top 3 cities with the highest number of employees.
 SELECT TOP 3
-	City, COUNT(*) AS NumEmployees
+    City, COUNT(*) AS NumEmployees
 FROM dbo.Employees
 GROUP BY City
 ORDER BY COUNT(*) DESC
@@ -225,7 +225,7 @@ GO
 
 --39. Show the top 3 cities with the most employees, including ties.
 SELECT TOP 3 WITH TIES
-	City, COUNT(*) AS NumEmployees
+    City, COUNT(*) AS NumEmployees
 FROM dbo.Employees
 GROUP BY City
 ORDER BY COUNT(*) DESC
@@ -273,7 +273,7 @@ SELECT dbo.Products.ProductName,
 dbo.Categories.CategoryName,
 dbo.Products.UnitPrice
 FROM dbo.Products INNER JOIN dbo.Categories
-	ON dbo.Products.CategoryID = dbo.Categories.CategoryID
+    ON dbo.Products.CategoryID = dbo.Categories.CategoryID
 WHERE UnitPrice > 50
 ORDER BY ProductName
 GO
@@ -372,7 +372,7 @@ GO
 --Lab 4: Data Selection Queries
 --simple select query
 
---1. show the column name in the product table
+--1. Show the column name in the product table
 SELECT * FROM dbo.Products
 WHERE 1=0
 GO
@@ -392,7 +392,7 @@ GO
 --aggregate query
 --1. Show total units for products with a unit price greater than 30 and at least 1 order, also sorted by total units descending
 SELECT ProductName, UnitsInStock, UnitsOnOrder,
-	SUM(UnitsInStock + UnitsOnOrder) AS TotalUnits
+    SUM(UnitsInStock + UnitsOnOrder) AS TotalUnits
 FROM dbo.Products
 WHERE UnitPrice > 30 AND UnitsOnOrder > 0
 GROUP BY ProductName, UnitsInStock, UnitsOnOrder
@@ -401,7 +401,7 @@ GO
 
 --2. The same as above but only display rows where the TotalUnits are greater than 40
 SELECT ProductName, UnitsInStock, UnitsOnOrder,
-	SUM(UnitsInStock + UnitsOnOrder) AS TotalUnits
+    SUM(UnitsInStock + UnitsOnOrder) AS TotalUnits
 FROM dbo.Products
 WHERE UnitPrice > 30 AND UnitsOnOrder > 0
 GROUP BY ProductName, UnitsInStock, UnitsOnOrder
@@ -409,11 +409,11 @@ HAVING SUM(UnitsInStock + UnitsOnOrder) > 40
 ORDER BY TotalUnits DESC
 
 --Joining Tables with an Inner Join
---1. show the column name in the Categories table
+--1. Show the column name in the Categories table
 SELECT * FROM dbo.Categories WHERE 1=0
 GO
 
---2.  insert a new row for the All Diet category into the Categories table
+--2. Insert a new row for the all diet category into the Categories table
 INSERT INTO dbo.Categories(CategoryName, Description)
 VALUES ('All Diet', 'Low carb, low protein, all types of dieting items')
 GO
@@ -421,26 +421,26 @@ GO
 --3. Displays only the products that have a matching category and Sorts the result in ascending order by CategoryName.
 SELECT Categories.CategoryName, Products.ProductName
 FROM dbo.Categories INNER JOIN dbo.Products
-	ON Categories.CategoryID = Products.CategoryID
+    ON Categories.CategoryID = Products.CategoryID
 ORDER BY Categories.CategoryName
 GO
 
---4. display all of the categories regardless of whether they have any products associated with them.
+--4. Display all of the categories regardless of whether they have any products associated with them.
 SELECT Categories.CategoryName, Products.ProductName
 FROM dbo.Categories LEFT JOIN dbo.Products
-	ON Categories.CategoryID = Products.CategoryID
+    ON Categories.CategoryID = Products.CategoryID
 ORDER BY Categories.CategoryName
 GO
 
 --Aggregate Query with Multiple Inner Joins 
---1. retrieves the total sales amount for each product grouped by its category.
+--1. Retrieves the total sales amount for each product grouped by its category.
 SELECT Categories.CategoryName, Products.ProductName,
-	SUM([Order Details].UnitPrice*[Order Details].Quantity)
-	AS Total
+    SUM([Order Details].UnitPrice*[Order Details].Quantity)
+    AS Total
 FROM dbo.Categories INNER JOIN dbo.Products
-	ON Categories.CategoryID = Products.CategoryID
+    ON Categories.CategoryID = Products.CategoryID
 INNER JOIN dbo.[Order Details]
-	ON Products.ProductID = [Order Details].ProductID
+    ON Products.ProductID = [Order Details].ProductID
 GROUP BY Categories.CategoryName, Products.ProductName
 ORDER BY Categories.CategoryName, Products.ProductName
 GO
@@ -449,12 +449,12 @@ GO
 --1. Show all categories and products with their total sales amount, 
 -- including products with no sales and categories with no products.
 SELECT Categories.CategoryName, Products.ProductName,
-	SUM([Order Details].UnitPrice*[Order Details].Quantity)
-	AS Total
+    SUM([Order Details].UnitPrice*[Order Details].Quantity)
+    AS Total
 FROM dbo.Categories LEFT JOIN dbo.Products
-	ON Categories.CategoryID = Products.CategoryID
+    ON Categories.CategoryID = Products.CategoryID
 LEFT JOIN dbo.[Order Details]
-	ON Products.ProductID = [Order Details].ProductID
+    ON Products.ProductID = [Order Details].ProductID
 GROUP BY Categories.CategoryName, Products.ProductName
 ORDER BY Categories.CategoryName, Products.ProductName
 GO
